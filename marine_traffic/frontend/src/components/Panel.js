@@ -62,9 +62,11 @@ const Panel = (props) => {
                     transition: 'transform 0.3s ease-in-out',
                     zIndex: 1001,
                     padding: '60px 20px 20px 20px',
+                    overflowY: 'auto'
                 }}
             >
                 {/* Здесь пока ничего нет */}
+                {props.children}
             </div>
         </>
     );
