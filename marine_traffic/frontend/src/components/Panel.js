@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const Panel = (props) => {
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(props.isOn);
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
@@ -17,7 +17,7 @@ const Panel = (props) => {
                     left: props.hidari == true ? '20px' : 'auto',
                     right: props.hidari == false ? '20px' : 'auto',
                     top: '80px',
-                    zIndex: 1002,
+                    zIndex: 1003,
                     backgroundColor: '#2c3e50',
                     color: 'white',
                     border: 'none',
@@ -31,20 +31,7 @@ const Panel = (props) => {
             </button>
 
             {/* Затемнение фона (клик по нему закрывает панель) */}
-            {isOpen && (
-                <div
-                    onClick={toggleSidebar}
-                    style={{
-                        position: 'fixed',
-                        top: '70px',
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                        zIndex: 1000,
-                    }}
-                />
-            )}
+
 
             {/* Сама панель */}
             <div
