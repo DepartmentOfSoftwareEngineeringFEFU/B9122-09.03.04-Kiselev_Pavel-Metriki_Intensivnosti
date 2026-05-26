@@ -2,5 +2,5 @@ from django.shortcuts import render
 
 # Create your views here.
 def screen_gen(request):
-    template = 'first.html'
+    template = 'index.html'
     return render(request, template)
