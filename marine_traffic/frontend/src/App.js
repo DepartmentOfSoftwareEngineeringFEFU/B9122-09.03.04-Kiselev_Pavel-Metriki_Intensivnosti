@@ -5,8 +5,18 @@ import Panel from './components/Panel.js'
 import Map from './components/Map.js'
 import Preset from './components/Preset.js'
 
+
 function App() {
   const [ships, setShips] = useState(null);
+  const [aqua_x, setAquaX] = useState(null);
+  const [aqua_y, setAquaY] = useState(null);
+  const [pol_size, setPol] = useState(5);
+  const [inputValue, setInputValue] = useState(pol_size);
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); // чтобы страница не перезагружалась
+    setPol(Number(inputValue));
+  };
 
   const handleDataLoaded = (data) => {
     console.log('ПРО ЗАГРУЖЕННЫЕ ДАННЫЕ')
@@ -14,6 +24,8 @@ function App() {
     console.log('ВСЕ ДАННЫЕ:', data.ships)
     console.log('Первая строка: ', data.ships[0].id_track,' ',data.ships[0].id_marine,' ',data.ships[0].lat,' ',data.ships[0].lon,' ',data.ships[0].speed,' ',data.ships[0].course,' ',data.ships[0].age,' ',data.ships[0].data_add)
     setShips(data.ships);
+    setAquaX(data.x_proc)
+    setAquaY(data.y_proc)
 
   };  
 
@@ -26,7 +38,7 @@ function App() {
                 height: 'calc(100vh - 72px)',  // на всю высоту под шапкой
                 position: 'relative'
             }}>
-        <Map ships={ships || []}/>
+        <Map ships={ships || []} aqua_x={aqua_x} aqua_y={aqua_y} pol_size={pol_size}/>
       </main>
 
       <Preset onDataLoaded={handleDataLoaded}/>
@@ -50,9 +62,13 @@ function App() {
           </form>
 
           <h4>Размер полигонов (в км.):</h4>
-          <form>
-            <input/>
-            <button>Подтвердить</button>
+          <form onSubmit={handleSubmit}>
+            <input
+            type="number"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            />
+            <button type="sumbit">Подтвердить</button>
           </form>
           </div>
 

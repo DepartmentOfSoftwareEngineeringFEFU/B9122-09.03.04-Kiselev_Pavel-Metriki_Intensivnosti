@@ -1,6 +1,7 @@
 // components/WorldMap.js
+import { generateGrid } from './Wakeri.js'
 import React from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap, ZoomControl } from 'react-leaflet';
+import { MapContainer, TileLayer, Polygon, Marker, Popup, useMap, ZoomControl } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -12,10 +13,13 @@ L.Icon.Default.mergeOptions({
     shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
-function WorldMap() {
+
+function WorldMap({ ships = [], aqua_x = [], aqua_y = [], pol_size}) {
     // Начальная позиция карты (центр мира)
     const position = [20, 0];  // [широта, долгота]
-    
+    const squares = generateGrid(aqua_x, aqua_y, pol_size);
+    console.log('КВАДРАТЫ:', squares.length)
+
     return (
         <MapContainer
             center={position}
@@ -32,17 +36,47 @@ function WorldMap() {
             <ZoomControl position="bottomright" />
 
             {/* Пример маркера (можно удалить или добавить свои) */}
-            <Marker position={[55.751244, 37.618423]}>
+
+
+            {ships.map((ship) => (
+              <Marker position={[ship.lon, ship.lat]}>
                 <Popup>
-                    Москва <br /> Столица России
+                  ID: {ship.id_marine} <br />
                 </Popup>
-            </Marker>
-            
-            <Marker position={[40.712776, -74.005974]}>
-                <Popup>
-                    Нью-Йорк <br /> США
-                </Popup>
-            </Marker>
+              </Marker>
+            ))}
+
+            {aqua_x?.length === 2 && aqua_y?.length === 2 && (
+                <Polygon 
+                  positions={[
+                    [aqua_y[0]-0.003, aqua_x[1]+0.03],
+                    [aqua_y[0]-0.003, aqua_x[0]-0.03],
+                    [aqua_y[1]+0.003, aqua_x[0]-0.03],
+                    [aqua_y[1]+0.003, aqua_x[1]+0.03]
+                  ]} 
+                  color="red" 
+                  weight={3}
+                  fill={false}
+                />
+            )}
+
+            {squares?.length>0 && squares.map((square) => (
+                <Polygon
+                key={square.id}
+                positions={[
+                    [square.bounds[0][0], square.bounds[0][1]],
+                    [square.bounds[0][0], square.bounds[1][1]],
+                    [square.bounds[1][0], square.bounds[1][1]],
+                    [square.bounds[1][0], square.bounds[0][1]],
+                    [square.bounds[0][0], square.bounds[0][1]]
+                ]}
+                color="red"
+                weight={1}
+                fill={false}
+            />
+            ))}
+
+
         </MapContainer>
     );
 }

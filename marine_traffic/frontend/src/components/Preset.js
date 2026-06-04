@@ -8,21 +8,8 @@ const Preset = (props) => {
     // Состояния для хранения загруженных данных
     const [shipDataset, setShipDataset] = useState(null);
     const [shipFileName, setShipFileName] = useState('');
-
-    //ОБРАБОТЧИК ДЛЯ CSV
-    const parseCSV = (csvText) => {
-        const lines = csvText.trim().split('\n');
-        const headers = lines[0].split(',');
-        
-        return lines.slice(1).map(line => {
-            const values = line.split(',');
-            const obj = {};
-            headers.forEach((header, i) => {
-                obj[header] = isNaN(values[i]) ? values[i] : Number(values[i]);
-            });
-            return obj;
-        });
-    };
+    const [x_proc, setXProc] = useState([180, -180]);
+    const [y_proc, setYProc] = useState([180, -180]);
 
     // Обработчик загрузки файла с кораблями
     const handleShipFileUpload = (event) => {
@@ -30,14 +17,14 @@ const Preset = (props) => {
         if (!file) return;
         
         setShipFileName(file.name);
-        
+
         const reader = new FileReader();
         reader.onload = (e) => {
             const content = e.target.result;
+            let minLon = 180, maxLon = -180;
+            let minLat = 180, maxLat = -90;
             // Парсим в зависимости от типа файла
-            if (file.name.endsWith('.json')) {
-                setShipDataset(JSON.parse(content));
-            } else if (file.name.endsWith('.csv')) {
+            if (file.name.endsWith('.csv')) {
                 Papa.parse(content, {
                     header: true,           // ← первая строка — заголовки
                     skipEmptyLines: true,
@@ -54,8 +41,24 @@ const Preset = (props) => {
                             if (row.lon) {
                                 row.lon = parseFloat(String(row.lon).replace(',', '.'));
                             }
+                            if (row.lon) {
+                                if (row.lon < minLon) minLon = row.lon;
+                                if (row.lon > maxLon) maxLon = row.lon;
+                            }
+                            if (row.lat) {
+                                if (row.lat < minLat) minLat = row.lat;
+                                if (row.lat > maxLat) maxLat = row.lat;
+                            }
+
                             return row;
                         });
+
+                        setXProc([minLat, maxLat]);
+                        setYProc([minLon, maxLon]);
+
+                        console.log('Долгота (x):', minLon, maxLon);
+                        console.log('Широта (y):', minLat, maxLat);
+
                         setShipDataset(parsedData);
                         console.log('Загружено кораблей:', parsedData.length);
                     },
@@ -75,6 +78,8 @@ const Preset = (props) => {
         if (props.onDataLoaded) {
             props.onDataLoaded({
                 ships: shipDataset,
+                x_proc: x_proc,
+                y_proc: y_proc
             });
         }
         setIsOpen(false);
