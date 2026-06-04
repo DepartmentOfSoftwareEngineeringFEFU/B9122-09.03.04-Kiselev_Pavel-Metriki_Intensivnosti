@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import './CSS/App.css';
 import Header from './components/Header.js'
 import Panel from './components/Panel.js'
@@ -5,6 +6,16 @@ import Map from './components/Map.js'
 import Preset from './components/Preset.js'
 
 function App() {
+  const [ships, setShips] = useState(null);
+
+  const handleDataLoaded = (data) => {
+    console.log('ПРО ЗАГРУЖЕННЫЕ ДАННЫЕ')
+    console.log('Размер данных: ', data.ships.length)
+    console.log('ВСЕ ДАННЫЕ:', data.ships)
+    console.log('Первая строка: ', data.ships[0].id_track,' ',data.ships[0].id_marine,' ',data.ships[0].lat,' ',data.ships[0].lon,' ',data.ships[0].speed,' ',data.ships[0].course,' ',data.ships[0].age,' ',data.ships[0].data_add)
+    setShips(data.ships);
+
+  };  
 
   return (
     <div className="App">
@@ -15,10 +26,10 @@ function App() {
                 height: 'calc(100vh - 72px)',  // на всю высоту под шапкой
                 position: 'relative'
             }}>
-        <Map/>
+        <Map ships={ships || []}/>
       </main>
 
-      <Preset />
+      <Preset onDataLoaded={handleDataLoaded}/>
 
       <Panel hidari={true} isOn={true}>
         <div style= {{
