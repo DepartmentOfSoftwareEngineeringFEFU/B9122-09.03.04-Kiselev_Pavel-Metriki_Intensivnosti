@@ -56,7 +56,7 @@ export const generateGrid = (aqua_x, aqua_y, cellSizeKm) => {
         const nextLon = lon + stepLon;
 
           squares.push({
-            //  id: `${lat}_${lon}`,
+              id: `${lat}_${lon}`,
               bounds: [
                   [lat, lon],
                   [nextLat, nextLon]

@@ -61,7 +61,7 @@ function WorldMap({ ships = [], aqua_x = [], aqua_y = [], squares = [], pol_size
 
             {squares?.length>0 && showPols == true && squares.map((square, index) => (
                 <Polygon
-                key={square.id}
+                key={`${square.id}_${square.safety}`}
                 positions={[
                     [square.bounds[0][0], square.bounds[0][1]],
                     [square.bounds[0][0], square.bounds[1][1]],

@@ -12,7 +12,7 @@ function App() {
   const [ships, setShips] = useState([]);
   const [aqua_x, setAquaX] = useState(null);
   const [aqua_y, setAquaY] = useState(null);
-  const [pol_size, setPol] = useState(5);
+  const [pol_size, setPol] = useState(10);
   const [inputValue, setInputValue] = useState(pol_size);
   const [squares, setSquares] = useState([])
 
@@ -111,7 +111,8 @@ function App() {
               onClick= {() => setSquares(metricsCount(ships, squares))}
             >Вычислить</button>
             <button style={{width: '200px', height: '50px',
-              borderRadius: '10px', margin: '20px'}}>Подтвердить данные</button>
+              borderRadius: '10px', margin: '20px'}}
+              >Подтвердить данные</button>
           </div>  
         </div>
       </Panel>
