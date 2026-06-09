@@ -50,6 +50,17 @@ const Preset = (props) => {
                                 if (row.lat > maxLat) maxLat = row.lat;
                             }
 
+                            row.course = Number(row.course)
+                            if (row.course > 360) {
+                                while (row.course > 360) row.course = row.course-360
+                                 
+                            }
+
+                            row.age = Number(row.age)
+                            row.speed = Number(row.speed)
+                            row.id_marine = Number(row.id_marine)
+                            row.id_track = Number(row.id_track)
+
                             return row;
                         });
 

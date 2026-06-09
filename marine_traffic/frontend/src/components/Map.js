@@ -15,6 +15,23 @@ L.Icon.Default.mergeOptions({
 });
 
 
+const createShipArrow = (course) => {
+  return L.divIcon({
+      html: `<div style="
+          width: 0;
+          height: 0;
+          border-left: 8px solid transparent;
+          border-right: 8px solid transparent;
+          border-bottom: 20px solid #f9db11;
+          transform: rotate(${course || 0}deg);
+      "></div>`,
+      iconSize: [16, 16],
+      className: 'ship-marker',
+      popupAnchor: [0, -8]
+  });
+};
+
+
 function WorldMap({ ships = [], aqua_x = [], aqua_y = [], squares = [], pol_size, showAqua, showPols}) {
     // Начальная позиция карты (центр мира)
     const position = [20, 0];  // [широта, долгота] 
@@ -38,9 +55,12 @@ function WorldMap({ ships = [], aqua_x = [], aqua_y = [], squares = [], pol_size
 
 
             {ships.map((ship) => (
-              <Marker position={[ship.lon, ship.lat]}>
+              <Marker 
+              position={[ship.lon, ship.lat]}
+              icon={createShipArrow(ship.course)}>
                 <Popup>
                   ID: {ship.id_marine} <br />
+                  COURSE: {ship.course}
                 </Popup>
               </Marker>
             ))}
@@ -76,8 +96,9 @@ function WorldMap({ ships = [], aqua_x = [], aqua_y = [], squares = [], pol_size
     <Popup>
         <strong>Квадрат {index}</strong><br />
         Координаты: {square.bounds[0][0].toFixed(4)}, {square.bounds[0][1].toFixed(4)}<br />
-        Ширина: <br />
-        Высота: 
+        Ширина: {square.bounds[1][1] - square.bounds[0][1]} <br />
+        Высота: {square.bounds[1][0] - square.bounds[0][0]} <br />
+        Судов внутри: {square.safety}
     </Popup>
             </Polygon>  
             ))}
