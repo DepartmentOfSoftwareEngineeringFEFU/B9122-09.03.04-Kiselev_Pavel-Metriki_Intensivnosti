@@ -6,6 +6,7 @@ const kmToDegreesLon = (km, latitude) => {
 };
 
 export const generateGrid = (aqua_x, aqua_y, cellSizeKm) => {
+    console.log("ГЕНЕРАЦИЯ ПОЛИГОНОВ")
     if (!aqua_x || !aqua_y || aqua_x.length !== 2 || aqua_y.length !== 2) {
         console.warn('generateGrid: некорректные координаты', { aqua_x, aqua_y });
         return [];  // возвращаем пустой массив вместо ошибки
@@ -20,20 +21,51 @@ export const generateGrid = (aqua_x, aqua_y, cellSizeKm) => {
   const minLat = aqua_y[0] - 0.003;
   const maxLat = aqua_y[1] + 0.003;
 
+
+
+      // Размер области в градусах
+      const widthDeg = maxLon - minLon;
+      const heightDeg = maxLat - minLat;
+  
+      // Количество квадратов (целое)
+      const cols = Math.floor(widthDeg / stepLon);
+      const rows = Math.floor(heightDeg / stepLat);
+  
+      // Общая ширина и высота сетки
+      const totalWidth = cols * stepLon;
+      const totalHeight = rows * stepLat;
+  
+      // Смещение для центрирования
+      const offsetX = (widthDeg - totalWidth) / 2;
+      const offsetY = (heightDeg - totalHeight) / 2;
+  
+      // Стартовые координаты с учётом смещения
+      const startLon = minLon + offsetX;
+      const startLat = minLat + offsetY;
+
+
+
   // Создаём сетку квадратов
   // let lat = minLat; lat + stepLat <= maxLat; lat += stepLat
   const squares = [];
-  for (let lat = maxLat; lat - stepLat > minLat; lat -= stepLat) {
-      for (let lon = minLon; lon + stepLon <= maxLon; lon += stepLon) {
+  for (let i = 0; i < rows; i++) {
+    const lat = startLat + i * stepLat;
+    const nextLat = lat + stepLat;
+      for (let j = 0; j < cols; j++) {
+        const lon = startLon + j * stepLon;
+        const nextLon = lon + stepLon;
+
           squares.push({
+            //  id: `${lat}_${lon}`,
               bounds: [
-                  [lat - stepLat, lon],
-                  [lat, lon + stepLon]
+                  [lat, lon],
+                  [nextLat, nextLon]
               ],
-              id: `${lat}_${lon}`
+              safety: -1
           });
       }
   }
 
+  console.log('КВАДРАТЫ:', squares.length)
   return squares;
 };

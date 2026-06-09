@@ -1,17 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './CSS/App.css';
 import Header from './components/Header.js'
 import Panel from './components/Panel.js'
 import Map from './components/Map.js'
 import Preset from './components/Preset.js'
+import { generateGrid } from './components/Wakeri.js'
+import { metricsCount } from './components/Metrics_Count.js'
 
 
 function App() {
-  const [ships, setShips] = useState(null);
+  const [ships, setShips] = useState([]);
   const [aqua_x, setAquaX] = useState(null);
   const [aqua_y, setAquaY] = useState(null);
   const [pol_size, setPol] = useState(5);
   const [inputValue, setInputValue] = useState(pol_size);
+  const [squares, setSquares] = useState([])
+
+  useEffect(() => {
+    if (aqua_x && aqua_y) {
+        setSquares(generateGrid(aqua_x, aqua_y, pol_size));
+    }
+}, [aqua_x, aqua_y, pol_size]);
+
+
+  // отображение всякого на карте
+  const [showPols, setPolsShowcase] = useState(true)
+  const [showAqua, setAquaShowcase] = useState(true)
 
   const handleSubmit = (e) => {
     e.preventDefault(); // чтобы страница не перезагружалась
@@ -27,6 +41,7 @@ function App() {
     setAquaX(data.x_proc)
     setAquaY(data.y_proc)
 
+
   };  
 
   return (
@@ -38,7 +53,9 @@ function App() {
                 height: 'calc(100vh - 72px)',  // на всю высоту под шапкой
                 position: 'relative'
             }}>
-        <Map ships={ships || []} aqua_x={aqua_x} aqua_y={aqua_y} pol_size={pol_size}/>
+        <Map ships={ships || []} aqua_x={aqua_x} aqua_y={aqua_y}
+         squares={squares} pol_size={pol_size}
+         showAqua={showAqua} showPols={showPols}/>
       </main>
 
       <Preset onDataLoaded={handleDataLoaded}/>
@@ -70,14 +87,29 @@ function App() {
             />
             <button type="sumbit">Подтвердить</button>
           </form>
+
+          <form onSubmit={(e) => e.preventDefault()}>
+            <input type="checkbox" 
+            checked={showAqua}
+            onChange={(e) => setAquaShowcase(e.target.checked)} 
+            />Показывать границы акватории
+          </form>
+
+          <form onSubmit={(e) => e.preventDefault()}>
+            <input type="checkbox" 
+            checked={showPols}
+            onChange={(e) => setPolsShowcase(e.target.checked)} 
+            />Показывать полигоны
+          </form>
           </div>
 
           <div style={{display: 'flex', flexDirection: 'column',
            alignItems: 'center', marginBottom: '30px'
           }}>
             <button style={{width: '200px', height: '50px',
-              borderRadius: '10px', margin: '10px'
-            }}>Вычислить</button>
+              borderRadius: '10px', margin: '10px'}}
+              onClick= {() => setSquares(metricsCount(ships, squares))}
+            >Вычислить</button>
             <button style={{width: '200px', height: '50px',
               borderRadius: '10px', margin: '20px'}}>Подтвердить данные</button>
           </div>  

@@ -1,6 +1,7 @@
 // components/WorldMap.js
 import { generateGrid } from './Wakeri.js'
 import React from 'react';
+import { useMemo } from 'react';
 import { MapContainer, TileLayer, Polygon, Marker, Popup, useMap, ZoomControl } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -14,11 +15,9 @@ L.Icon.Default.mergeOptions({
 });
 
 
-function WorldMap({ ships = [], aqua_x = [], aqua_y = [], pol_size}) {
+function WorldMap({ ships = [], aqua_x = [], aqua_y = [], squares = [], pol_size, showAqua, showPols}) {
     // Начальная позиция карты (центр мира)
-    const position = [20, 0];  // [широта, долгота]
-    const squares = generateGrid(aqua_x, aqua_y, pol_size);
-    console.log('КВАДРАТЫ:', squares.length)
+    const position = [20, 0];  // [широта, долгота] 
 
     return (
         <MapContainer
@@ -46,7 +45,7 @@ function WorldMap({ ships = [], aqua_x = [], aqua_y = [], pol_size}) {
               </Marker>
             ))}
 
-            {aqua_x?.length === 2 && aqua_y?.length === 2 && (
+            {aqua_x?.length === 2 && aqua_y?.length === 2 && showAqua == true && (
                 <Polygon 
                   positions={[
                     [aqua_y[0]-0.003, aqua_x[1]+0.03],
@@ -60,7 +59,7 @@ function WorldMap({ ships = [], aqua_x = [], aqua_y = [], pol_size}) {
                 />
             )}
 
-            {squares?.length>0 && squares.map((square) => (
+            {squares?.length>0 && showPols == true && squares.map((square, index) => (
                 <Polygon
                 key={square.id}
                 positions={[
@@ -72,10 +71,20 @@ function WorldMap({ ships = [], aqua_x = [], aqua_y = [], pol_size}) {
                 ]}
                 color="red"
                 weight={1}
-                fill={false}
-            />
+                fill={ square.safety == -1 ? false : true }
+            >
+    <Popup>
+        <strong>Квадрат {index}</strong><br />
+        Координаты: {square.bounds[0][0].toFixed(4)}, {square.bounds[0][1].toFixed(4)}<br />
+        Ширина: <br />
+        Высота: 
+    </Popup>
+            </Polygon>  
             ))}
+           
 
+
+           {}
 
         </MapContainer>
     );
