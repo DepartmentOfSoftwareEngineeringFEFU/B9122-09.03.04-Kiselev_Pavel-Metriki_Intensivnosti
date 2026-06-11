@@ -1,8 +1,14 @@
-from django.urls import path
-from .views import hello, get_metrics, create_metric
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import MetricViewSet
+
+router = DefaultRouter()
+
+router.register(
+    "metrics",
+    MetricViewSet
+)
 
 urlpatterns = [
-    path('hello/', hello),
-    path('metrics/create/', create_metric),
-    path('metrics/', get_metrics),
+    path("", include(router.urls)),
 ]

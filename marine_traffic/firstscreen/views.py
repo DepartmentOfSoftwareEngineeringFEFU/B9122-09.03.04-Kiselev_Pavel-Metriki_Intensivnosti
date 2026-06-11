@@ -1,6 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
+from rest_framework import viewsets
 from .models import Metric
 from .serializers import MetricSerializer
 
@@ -34,3 +35,9 @@ def create_metric(request):
         return Response(serializer.data)
 
     return Response(serializer.errors)
+
+
+class MetricViewSet(viewsets.ModelViewSet):
+
+    queryset = Metric.objects.all()
+    serializer_class = MetricSerializer

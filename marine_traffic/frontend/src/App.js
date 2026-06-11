@@ -16,6 +16,20 @@ function App() {
   const [inputValue, setInputValue] = useState(pol_size);
   const [squares, setSquares] = useState([])
 
+  const updateAPIdata = () => {
+    fetch("http://127.0.0.1:8000/api/metrics/")
+        .then(res => res.json())
+        .then(data => setMetrics(data));   
+  }
+
+  const [metrics, setMetrics] = useState([]);
+
+
+  useEffect(() => {
+    updateAPIdata()
+  }, []);
+  const [selectedMetric, setSelectedMetric] = useState(null)
+
   useEffect(() => {
     if (aqua_x && aqua_y) {
         setSquares(generateGrid(aqua_x, aqua_y, pol_size));
@@ -57,8 +71,6 @@ function App() {
     <div className="App">
       <Header />
       <main style={{
-                //marginLeft: '320px',
-                //marginRight: '320px',
                 height: 'calc(100vh - 72px)',  // на всю высоту под шапкой
                 position: 'relative'
             }}>
@@ -81,11 +93,24 @@ function App() {
             overflowY: 'auto',
           }}>
             <p>
-              <input type='checkbox'/> Интенсивность движения<br/>
-              <input type='checkbox'/> Интенсивность + скорость<br/>
-              <input type='checkbox'/> Интенсивность + размеры
+              {
+              (metrics.length > 0) 
+              ?  metrics.map((metric, index) => (
+                <div key={metric.id}>
+                  <input
+                    type="radio"
+                    name="metric"
+                    value={index}
+                    checked={selectedMetric == index}
+                    onChange={(e) => setSelectedMetric(index)}
+                  /> {metric.name}
+                </div>
+              ))
+              : <p>Метрик не замечено. <br/>Создайте их через API!</p>
+              }
             </p>
           </form>
+          <button onClick={(e) => updateAPIdata()}>Обновить</button>
 
           <h4>Размер полигонов (в км.):</h4>
           <form onSubmit={handleSubmit}>
@@ -117,7 +142,7 @@ function App() {
           }}>
             <button style={{width: '200px', height: '50px',
               borderRadius: '10px', margin: '10px'}}
-              onClick= {() => setSquares(metricsCount(ships, squares))}
+              onClick= {() => setSquares(metricsCount(ships, squares, metrics[selectedMetric]))}
             >Вычислить</button>
             <button style={{width: '200px', height: '50px',
               borderRadius: '10px', margin: '20px'}}
