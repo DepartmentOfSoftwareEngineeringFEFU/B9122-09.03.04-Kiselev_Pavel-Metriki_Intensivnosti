@@ -40,9 +40,18 @@ function App() {
     setShips(data.ships);
     setAquaX(data.x_proc)
     setAquaY(data.y_proc)
+  };
 
+  const testApi = async () => {
+    const response = await fetch(
+        'http://127.0.0.1:8000/api/hello/'
+    );
 
-  };  
+    const data = await response.json();
+
+    console.log(data);
+};
+
 
   return (
     <div className="App">
@@ -142,7 +151,13 @@ function App() {
            alignItems: 'center', marginBottom: '30px'
           }}>
             <button style={{width: '200px', height: '50px',
-              borderRadius: '10px', margin: '20px'}}>Визуализировать</button>
+              borderRadius: '10px', margin: '20px'}}>Визуализировать
+            </button>
+
+            <button onClick={testApi}>
+              Проверить API
+            </button>
+
           </div>    
 
         </div>
