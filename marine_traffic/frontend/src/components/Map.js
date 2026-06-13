@@ -34,7 +34,37 @@ const createShipArrow = (course) => {
 
 function WorldMap({ ships = [], aqua_x = [], aqua_y = [], squares = [], pol_size, showAqua, showPols}) {
     // Начальная позиция карты (центр мира)
-    const position = [20, 0];  // [широта, долгота] 
+    const position = [20, 0];  // [широта, долгота]
+
+    const getColorByIntensity = (value) => {
+      if (value <= 0) return 'transparent';
+      let maxValue = 150
+      
+      const ratio = Math.min(value / maxValue, 1);
+    
+      // Зелёный (0) → Жёлтый (0.33) → Красный (0.66) → Чёрный (1)
+      if (ratio < 0.33) {
+          // Зелёный → Жёлтый
+          const r = Math.floor(255 * (ratio / 0.33));
+          const g = 255;
+          const b = 0;
+          return `rgb(${r}, ${g}, ${b})`;
+      } else if (ratio < 0.66) {
+          // Жёлтый → Красный
+          const g = Math.floor(255 * (1 - (ratio - 0.33) / 0.33));
+          return `rgb(255, ${g}, 0)`;
+      } else {
+          // Красный → Чёрный
+          const r = Math.floor(255 * (1 - (ratio - 0.66) / 0.34));
+          return `rgb(${r}, 0, 0)`;
+      }
+    }
+    
+    
+    const maxSafety = useMemo(() => {
+      if (!squares.length) return 1;
+      return Math.max(...squares.map(s => s.safety));
+    }, [squares]);
 
     return (
         <MapContainer
@@ -92,13 +122,15 @@ function WorldMap({ ships = [], aqua_x = [], aqua_y = [], squares = [], pol_size
                 color="red"
                 weight={1}
                 fill={ square.safety == -1 ? false : true }
+                fillColor={square.safety > 0 ? getColorByIntensity(square.safety) : 'transparent'}
+                fillOpacity={square.safety > 0 ? Math.min(0.3 + (square.safety / 150) * 0.5, 0.8) : 0}
             >
     <Popup>
         <strong>Квадрат {index}</strong><br />
         Координаты: {square.bounds[0][0].toFixed(4)}, {square.bounds[0][1].toFixed(4)}<br />
         Ширина: {square.bounds[1][1] - square.bounds[0][1]} <br />
         Высота: {square.bounds[1][0] - square.bounds[0][0]} <br />
-        Судов внутри: {square.safety}
+        Судов внутри: {Number.isInteger(square.safety) ? square.safety : square.safety.toFixed(2)}
     </Popup>
             </Polygon>  
             ))}

@@ -3,6 +3,8 @@ from django.db import models
 class Metric(models.Model):
     name = models.CharField(max_length=100)
 
+    intensivity = models.BooleanField(
+        default=False, verbose_name="Интенсивность")
     speed = models.BooleanField(
         default=False, verbose_name="Скорость")
     course = models.BooleanField(

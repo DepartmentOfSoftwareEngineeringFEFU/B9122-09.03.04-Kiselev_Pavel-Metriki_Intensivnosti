@@ -1,5 +1,17 @@
 const SpeedCount = (speed) => {
-  return (speed/10)+1
+  return (speed/2)+1
+}
+
+const IDCount = (id) => {
+  return (id) +1
+}
+
+const CourseCount = (course) => {
+  return (course) +1
+}
+
+const AgeCount = (age) => {
+  return (1/age)
 }
 
 
@@ -25,6 +37,15 @@ export const metricsCount = (ships = [], squares = [], metric) => {
 
               if (metric.speed == true) {
                 weight = weight * SpeedCount(ship.speed)
+              }
+              if (metric.id_marine == true) {
+                weight = weight * IDCount(ship.id_marine)
+              }
+              if (metric.course == true) {
+                weight = weight * CourseCount(ship.course)
+              }
+              if (metric.age == true) {
+                weight = weight * AgeCount(ship.age)
               }
               
               console.log(weight)
