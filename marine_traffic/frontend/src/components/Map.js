@@ -16,17 +16,20 @@ L.Icon.Default.mergeOptions({
 
 
 const createShipArrow = (course) => {
+
   return L.divIcon({
+      className: "",
       html: `<div style="
           width: 0;
           height: 0;
           border-left: 8px solid transparent;
           border-right: 8px solid transparent;
-          border-bottom: 20px solid #f9db11;
+          border-bottom: 16px solid #f9db11;
           transform: rotate(${course || 0}deg);
+          transform-origin:center center;
       "></div>`,
       iconSize: [16, 16],
-      className: 'ship-marker',
+      iconAnchor: [8, 8],
       popupAnchor: [0, -8]
   });
 };
@@ -98,10 +101,11 @@ function WorldMap({ ships = [], aqua_x = [], aqua_y = [], squares = [], pol_size
             {showVessels && ships.map((ship) => {
                let proc_date = formatDateForInput(ship.date_add)
                return (proc_date >= startTime && proc_date <= endTime) ? (
-              <Marker 
+              <Marker
+              
               position={[ship.lon, ship.lat]}
               icon={createShipArrow(ship.course)}
-              iconSize={ [16,16]}>
+              >
                 <Popup>
                   ID: {ship.id_marine} <br />
                   Курс: {ship.course}° <br />
