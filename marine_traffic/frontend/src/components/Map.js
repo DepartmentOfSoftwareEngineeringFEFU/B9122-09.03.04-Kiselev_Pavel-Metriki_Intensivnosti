@@ -32,7 +32,7 @@ const createShipArrow = (course) => {
 };
 
 
-function WorldMap({ ships = [], aqua_x = [], aqua_y = [], squares = [], pol_size, showAqua, showPols}) {
+function WorldMap({ ships = [], aqua_x = [], aqua_y = [], squares = [], pol_size, showAqua, showPols, startTime, endTime}) {
     // Начальная позиция карты (центр мира)
     const position = [20, 0];  // [широта, долгота]
 
@@ -66,6 +66,17 @@ function WorldMap({ ships = [], aqua_x = [], aqua_y = [], squares = [], pol_size
       return Math.max(...squares.map(s => s.safety));
     }, [squares]);
 
+
+    const formatDateForInput = (date) => {
+      if (!date || isNaN(date.getTime())) return '';
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
+
     return (
         <MapContainer
             center={position}
@@ -84,17 +95,21 @@ function WorldMap({ ships = [], aqua_x = [], aqua_y = [], squares = [], pol_size
             {/* Пример маркера (можно удалить или добавить свои) */}
 
 
-            {ships.map((ship) => (
+            {ships.map((ship) => {
+               let proc_date = formatDateForInput(ship.date_add)
+               return (proc_date >= startTime && proc_date <= endTime) ? (
               <Marker 
               position={[ship.lon, ship.lat]}
               icon={createShipArrow(ship.course)}
               iconSize={ [16,16]}>
                 <Popup>
                   ID: {ship.id_marine} <br />
-                  COURSE: {ship.course}
+                  Курс: {ship.course}° <br />
+                  Время получения данных: {proc_date}
                 </Popup>
               </Marker>
-            ))}
+
+              ) : null})}
 
             {aqua_x?.length === 2 && aqua_y?.length === 2 && showAqua == true && (
                 <Polygon 

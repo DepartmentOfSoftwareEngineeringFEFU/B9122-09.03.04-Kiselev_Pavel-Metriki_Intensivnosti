@@ -138,7 +138,9 @@ const Preset = (props) => {
             props.onDataLoaded({
                 ships: shipDataset,
                 x_proc: x_proc,
-                y_proc: y_proc
+                y_proc: y_proc,
+                startTime: startTime,
+                endTime: endTime
             });
         }
         setIsOpen(props.setPresetOpenness(false))
@@ -184,60 +186,45 @@ const Preset = (props) => {
                         )}
               </div>
 
-              <button style={{width: '200px', height: '50px',
-                borderRadius: '10px', margin: '20px'}}>Загрузить акваторию</button>
+            
             </div>
 
-            <div>
-    <h4>Временной диапазон:</h4>
-    <form style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '8px 0' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <label style={{ minWidth: '30px', fontWeight: 'bold' }}>С</label>
-            <input
-                type="datetime-local"
-                value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
-                style={{
+            {(shipDataset ) ? <div>
+              <h4>Временной диапазон:</h4>
+              <form style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '8px 0' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <label style={{ minWidth: '30px', fontWeight: 'bold' }}>С</label>
+                <input
+                  type="datetime-local"
+                  value={startTime}
+                  onChange={(e) => setStartTime(e.target.value)}
+                  style={{
                     padding: '4px 8px',
                     border: '1px solid #ccc',
                     borderRadius: '4px',
                     fontSize: '13px',
                     flex: 1
-                }}
-            />
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <label style={{ minWidth: '30px', fontWeight: 'bold' }}>По</label>
-            <input
-                type="datetime-local"
-                value={endTime}
-                onChange={(e) => setEndTime(e.target.value)}
-                style={{
-                    padding: '4px 8px',
-                    border: '1px solid #ccc',
-                    borderRadius: '4px',
-                    fontSize: '13px',
-                    flex: 1
-                }}
-            />
-        </div>
-        <button
-            type="button"
-            onClick={applyTimeFilter}
-            style={{
-                padding: '4px 12px',
-                backgroundColor: '#138ff4',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                marginTop: '4px'
-            }}
-        >
-            Применить фильтр
-        </button>
-    </form>
-</div>
+                  }}
+                />
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <label style={{ minWidth: '30px', fontWeight: 'bold' }}>По</label>
+                  <input
+                    type="datetime-local"
+                    value={endTime}
+                    onChange={(e) => setEndTime(e.target.value)}
+                    style={{
+                      padding: '4px 8px',
+                      border: '1px solid #ccc',
+                      borderRadius: '4px',
+                      fontSize: '13px',
+                      flex: 1
+                    }}
+                   />
+                </div>
+
+              </form>
+            </div> : null}
 
             {/* Кнопки действий */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>

@@ -20,9 +20,14 @@ function App() {
 
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
+
+  const [startTimeInput, setStartTimeInput] = useState('');
+  const [endTimeInput, setEndTimeInput] = useState('');
   
   const applyTimeFilter = () => {
       console.log('Фильтр по времени:');
+      setStartTime(startTimeInput)
+      setEndTime(endTimeInput)
       console.log('С:', startTime);
       console.log('По:', endTime);
       // здесь логика фильтрации судов
@@ -67,6 +72,10 @@ function App() {
     setShips(data.ships);
     setAquaX(data.x_proc)
     setAquaY(data.y_proc)
+    setStartTimeInput(data.startTime)
+    setEndTimeInput(data.endTime)
+    setStartTime(data.startTime)
+    setEndTime(data.endTime)
   };
 
   const testApi = async () => {
@@ -89,7 +98,8 @@ function App() {
             }}>
         <Map ships={ships || []} aqua_x={aqua_x} aqua_y={aqua_y}
          squares={squares} pol_size={pol_size}
-         showAqua={showAqua} showPols={showPols}/>
+         showAqua={showAqua} showPols={showPols}
+         startTime={startTime} endTime={endTime}/>
       </main>
 
       <Preset onDataLoaded={handleDataLoaded} presetIsOpen={presetIsOpen} setPresetOpenness={setPresetOpenness} />
@@ -158,8 +168,8 @@ function App() {
             <label style={{ minWidth: '30px', fontWeight: 'bold' }}>С</label>
             <input
                 type="datetime-local"
-                value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
+                value={startTimeInput}
+                onChange={(e) => setStartTimeInput(e.target.value)}
                 style={{
                     padding: '4px 8px',
                     border: '1px solid #ccc',
@@ -173,8 +183,8 @@ function App() {
             <label style={{ minWidth: '30px', fontWeight: 'bold' }}>По</label>
             <input
                 type="datetime-local"
-                value={endTime}
-                onChange={(e) => setEndTime(e.target.value)}
+                value={endTimeInput}
+                onChange={(e) => setEndTimeInput(e.target.value)}
                 style={{
                     padding: '4px 8px',
                     border: '1px solid #ccc',
