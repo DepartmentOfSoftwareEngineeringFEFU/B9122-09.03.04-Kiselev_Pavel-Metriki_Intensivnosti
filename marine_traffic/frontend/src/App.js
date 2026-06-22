@@ -9,12 +9,25 @@ import { metricsCount } from './components/Metrics_Count.js'
 
 
 function App() {
+  const [presetIsOpen, setPresetOpenness] = useState(true)
   const [ships, setShips] = useState([]);
   const [aqua_x, setAquaX] = useState(null);
   const [aqua_y, setAquaY] = useState(null);
   const [pol_size, setPol] = useState(10);
   const [inputValue, setInputValue] = useState(pol_size);
   const [squares, setSquares] = useState([])
+
+
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  
+  const applyTimeFilter = () => {
+      console.log('Фильтр по времени:');
+      console.log('С:', startTime);
+      console.log('По:', endTime);
+      // здесь логика фильтрации судов
+  };
+
 
   const updateAPIdata = () => {
     fetch("http://127.0.0.1:8000/api/metrics/")
@@ -50,7 +63,7 @@ function App() {
     console.log('ПРО ЗАГРУЖЕННЫЕ ДАННЫЕ')
     console.log('Размер данных: ', data.ships.length)
     console.log('ВСЕ ДАННЫЕ:', data.ships)
-    console.log('Первая строка: ', data.ships[0].id_track,' ',data.ships[0].id_marine,' ',data.ships[0].lat,' ',data.ships[0].lon,' ',data.ships[0].speed,' ',data.ships[0].course,' ',data.ships[0].age,' ',data.ships[0].data_add)
+    console.log('Первая строка: ', data.ships[0].id_track,' ',data.ships[0].id_marine,' ',data.ships[0].lat,' ',data.ships[0].lon,' ',data.ships[0].speed,' ',data.ships[0].course,' ',data.ships[0].age,' ',data.ships[0].date_add)
     setShips(data.ships);
     setAquaX(data.x_proc)
     setAquaY(data.y_proc)
@@ -79,7 +92,7 @@ function App() {
          showAqua={showAqua} showPols={showPols}/>
       </main>
 
-      <Preset onDataLoaded={handleDataLoaded}/>
+      <Preset onDataLoaded={handleDataLoaded} presetIsOpen={presetIsOpen} setPresetOpenness={setPresetOpenness} />
 
       <Panel hidari={true} isOn={true}>
         <div style= {{
@@ -137,6 +150,59 @@ function App() {
           </form>
           </div>
 
+          
+          <div>
+    <h4>Временной диапазон:</h4>
+    <form style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '8px 0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <label style={{ minWidth: '30px', fontWeight: 'bold' }}>С</label>
+            <input
+                type="datetime-local"
+                value={startTime}
+                onChange={(e) => setStartTime(e.target.value)}
+                style={{
+                    padding: '4px 8px',
+                    border: '1px solid #ccc',
+                    borderRadius: '4px',
+                    fontSize: '13px',
+                    flex: 1
+                }}
+            />
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <label style={{ minWidth: '30px', fontWeight: 'bold' }}>По</label>
+            <input
+                type="datetime-local"
+                value={endTime}
+                onChange={(e) => setEndTime(e.target.value)}
+                style={{
+                    padding: '4px 8px',
+                    border: '1px solid #ccc',
+                    borderRadius: '4px',
+                    fontSize: '13px',
+                    flex: 1
+                }}
+            />
+        </div>
+        <button
+            type="button"
+            onClick={applyTimeFilter}
+            style={{
+                padding: '4px 12px',
+                backgroundColor: '#138ff4',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                marginTop: '4px'
+            }}
+        >
+            Применить фильтр
+        </button>
+    </form>
+</div>
+
+
           <div style={{display: 'flex', flexDirection: 'column',
            alignItems: 'center', marginBottom: '30px'
           }}>
@@ -146,8 +212,10 @@ function App() {
             >Вычислить</button>
             <button style={{width: '200px', height: '50px',
               borderRadius: '10px', margin: '20px'}}
+              onClick= {() => setPresetOpenness(true)}
               >Подтвердить данные</button>
           </div>  
+
         </div>
       </Panel>
 
@@ -159,17 +227,21 @@ function App() {
             justifyContent: 'space-between', gap: '30px',
             padding: '5px 0'
           }}>
-            <div style={{border: 'solid 1px black', padding: 'auto',
-              height: '175px', overflowY: 'auto', textAlign: 'center'
-            }}>
-              <p>Данные о судне или полигоне</p>
+            <div>
+              <h4>Данные о судне или полигоне</h4>
+              <div style={{border: 'solid 1px black', padding: 'auto',
+                height: '175px', overflowY: 'auto', textAlign: 'center'
+              }}>
+              </div>
             </div>
 
-            <div style={{border: 'solid 1px black', padding: 'auto',
-              height: '175px', overflowY: 'auto', textAlign: 'center'
-            }}>
-              <p>Вычисленные значения метрик</p>
-            </div>            
+            <div>
+              <h4>Вычисленные значения метрик</h4>
+              <div style={{border: 'solid 1px black', padding: 'auto',
+                height: '175px', overflowY: 'auto', textAlign: 'center'
+              }}>
+              </div>
+            </div>          
           </div>
 
           <div style={{display: 'flex', flexDirection: 'column',
@@ -179,9 +251,7 @@ function App() {
               borderRadius: '10px', margin: '20px'}}>Визуализировать
             </button>
 
-            <button onClick={testApi}>
-              Проверить API
-            </button>
+
 
           </div>    
 

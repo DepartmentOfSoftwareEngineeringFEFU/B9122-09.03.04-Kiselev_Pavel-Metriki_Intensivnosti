@@ -3,7 +3,12 @@ import Papa from 'papaparse';
 
 // components/CenterMenu.js
 const Preset = (props) => {
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(props.presetIsOpen);
+
+    useEffect(() => {
+        setIsOpen(props.presetIsOpen);
+    }, [props.presetIsOpen]);
+
 
     // Состояния для хранения загруженных данных
     const [shipDataset, setShipDataset] = useState(null);
@@ -11,11 +16,21 @@ const Preset = (props) => {
     const [x_proc, setXProc] = useState([180, -180]);
     const [y_proc, setYProc] = useState([180, -180]);
 
+    const [startTime, setStartTime] = useState('');
+    const [endTime, setEndTime] = useState('');
+
+    const applyTimeFilter = () => {
+        console.log('Фильтр по времени:');
+        console.log('С:', startTime);
+        console.log('По:', endTime);
+        // здесь логика фильтрации судов
+    };
+
     // Обработчик загрузки файла с кораблями
     const handleShipFileUpload = (event) => {
         const file = event.target.files[0];
         if (!file) return;
-        
+
         setShipFileName(file.name);
 
         const reader = new FileReader();
@@ -23,6 +38,9 @@ const Preset = (props) => {
             const content = e.target.result;
             let minLon = 180, maxLon = -180;
             let minLat = 180, maxLat = -90;
+
+            let maxDate = new Date(0)
+            let minDate = new Date(9999, 12, 31, 23, 59)
             // Парсим в зависимости от типа файла
             if (file.name.endsWith('.csv')) {
                 Papa.parse(content, {
@@ -31,10 +49,17 @@ const Preset = (props) => {
                     complete: (results) => {
                         // results.data — это уже массив объектов
                         const parsedData = results.data.map(row => {
-                            if (row.timestamp) {
-                                const [day, month, year, hour, minute] = row.timestamp.split(/[.: ]/);
-                                row.timestamp = new Date(year, month - 1, day, hour, minute);
+                            
+                            if (row.date_add) {
+                                const [datePart, timePart] = row.date_add.trim().split(" ");
+                                const [day, month, year] = datePart.split(".").map(Number);
+                                const [hour, minute] = timePart.split(":").map(Number);
+                            
+                                row.date_add = new Date(year, month - 1, day, hour, minute);
+                            
+                                console.log(row.date_add);
                             }
+                            
                             if (row.lat) {
                                 row.lat = parseFloat(String(row.lat).replace(',', '.'));
                             }
@@ -61,11 +86,34 @@ const Preset = (props) => {
                             row.id_marine = Number(row.id_marine)
                             row.id_track = Number(row.id_track)
 
+                            if (row.date_add && !isNaN(row.date_add.getTime())) {
+                                if (row.date_add > maxDate) {
+                                    maxDate = row.date_add;
+                                }
+                                if (row.date_add < minDate) {
+                                    minDate = row.date_add;
+                                }
+                            }
+
                             return row;
                         });
 
+                            // Форматируем даты для input
+                        const formatDateForInput = (date) => {
+                          if (!date || isNaN(date.getTime())) return '';
+                          const year = date.getFullYear();
+                          const month = String(date.getMonth() + 1).padStart(2, '0');
+                          const day = String(date.getDate()).padStart(2, '0');
+                          const hours = String(date.getHours()).padStart(2, '0');
+                          const minutes = String(date.getMinutes()).padStart(2, '0');
+                          return `${year}-${month}-${day}T${hours}:${minutes}`;
+                        }
+
                         setXProc([minLat, maxLat]);
                         setYProc([minLon, maxLon]);
+
+                        setStartTime(formatDateForInput(minDate))
+                        setEndTime(formatDateForInput(maxDate))
 
                         console.log('Долгота (x):', minLon, maxLon);
                         console.log('Широта (y):', minLat, maxLat);
@@ -93,7 +141,7 @@ const Preset = (props) => {
                 y_proc: y_proc
             });
         }
-        setIsOpen(false);
+        setIsOpen(props.setPresetOpenness(false))
     };
 
     return (
@@ -140,13 +188,56 @@ const Preset = (props) => {
                 borderRadius: '10px', margin: '20px'}}>Загрузить акваторию</button>
             </div>
 
-            {/*
             <div>
-              <button style={{width: '200px', height: '50px',
-                borderRadius: '10px', margin: '20px'}}
-                onClick={() => setIsOpen(false)}>Закрыть</button>
-            </div>
-            */}  
+    <h4>Временной диапазон:</h4>
+    <form style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '8px 0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <label style={{ minWidth: '30px', fontWeight: 'bold' }}>С</label>
+            <input
+                type="datetime-local"
+                value={startTime}
+                onChange={(e) => setStartTime(e.target.value)}
+                style={{
+                    padding: '4px 8px',
+                    border: '1px solid #ccc',
+                    borderRadius: '4px',
+                    fontSize: '13px',
+                    flex: 1
+                }}
+            />
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <label style={{ minWidth: '30px', fontWeight: 'bold' }}>По</label>
+            <input
+                type="datetime-local"
+                value={endTime}
+                onChange={(e) => setEndTime(e.target.value)}
+                style={{
+                    padding: '4px 8px',
+                    border: '1px solid #ccc',
+                    borderRadius: '4px',
+                    fontSize: '13px',
+                    flex: 1
+                }}
+            />
+        </div>
+        <button
+            type="button"
+            onClick={applyTimeFilter}
+            style={{
+                padding: '4px 12px',
+                backgroundColor: '#138ff4',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                marginTop: '4px'
+            }}
+        >
+            Применить фильтр
+        </button>
+    </form>
+</div>
 
             {/* Кнопки действий */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
@@ -167,7 +258,9 @@ const Preset = (props) => {
                     </button>
 
                     <button
-                        onClick={() => setIsOpen(false)}
+                        onClick={() => {
+                            setIsOpen(props.setPresetOpenness(false))
+                            setIsOpen(false);}}
                         style={{
                             width: '120px',
                             height: '40px',

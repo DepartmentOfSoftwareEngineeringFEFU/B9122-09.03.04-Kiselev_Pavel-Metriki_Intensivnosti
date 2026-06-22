@@ -87,7 +87,8 @@ function WorldMap({ ships = [], aqua_x = [], aqua_y = [], squares = [], pol_size
             {ships.map((ship) => (
               <Marker 
               position={[ship.lon, ship.lat]}
-              icon={createShipArrow(ship.course)}>
+              icon={createShipArrow(ship.course)}
+              iconSize={ [16,16]}>
                 <Popup>
                   ID: {ship.id_marine} <br />
                   COURSE: {ship.course}
