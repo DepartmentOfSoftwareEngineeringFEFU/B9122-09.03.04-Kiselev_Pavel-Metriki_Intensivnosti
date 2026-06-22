@@ -57,7 +57,9 @@ function App() {
 
   // отображение всякого на карте
   const [showPols, setPolsShowcase] = useState(true)
+  const [showVessels, setVesselShowcase] = useState(true)
   const [showAqua, setAquaShowcase] = useState(true)
+  const [showMetrics, setShowMetrics] = useState(true)
 
   const handleSubmit = (e) => {
     e.preventDefault(); // чтобы страница не перезагружалась
@@ -98,7 +100,7 @@ function App() {
             }}>
         <Map ships={ships || []} aqua_x={aqua_x} aqua_y={aqua_y}
          squares={squares} pol_size={pol_size}
-         showAqua={showAqua} showPols={showPols}
+         showAqua={showAqua} showPols={showPols} showVessels={showVessels} showMetrics={showMetrics}
          startTime={startTime} endTime={endTime}/>
       </main>
 
@@ -106,8 +108,8 @@ function App() {
 
       <Panel hidari={true} isOn={true}>
         <div style= {{
-        width: '100%', height: '85%',
-        display: 'flex', flexDirection: 'column', justifyContent: 'space-between'
+        width: '100%', height: '85%', display: 'flex',
+        flexDirection: 'column', justifyContent: 'space-between'
       }}>
         <div>
           <h4>Метрики для отображения:</h4>
@@ -145,19 +147,6 @@ function App() {
             <button type="sumbit">Подтвердить</button>
           </form>
 
-          <form onSubmit={(e) => e.preventDefault()}>
-            <input type="checkbox" 
-            checked={showAqua}
-            onChange={(e) => setAquaShowcase(e.target.checked)} 
-            />Показывать границы акватории
-          </form>
-
-          <form onSubmit={(e) => e.preventDefault()}>
-            <input type="checkbox" 
-            checked={showPols}
-            onChange={(e) => setPolsShowcase(e.target.checked)} 
-            />Показывать полигоны
-          </form>
           </div>
 
           
@@ -223,7 +212,7 @@ function App() {
             <button style={{width: '200px', height: '50px',
               borderRadius: '10px', margin: '20px'}}
               onClick= {() => setPresetOpenness(true)}
-              >Подтвердить данные</button>
+              >Изменить данные</button>
           </div>  
 
         </div>
@@ -237,6 +226,39 @@ function App() {
             justifyContent: 'space-between', gap: '30px',
             padding: '5px 0'
           }}>
+
+            <div>
+              <h4>Отображение:</h4>
+              <form onSubmit={(e) => e.preventDefault()}>
+                <input type="checkbox" 
+                  checked={showAqua}
+                  onChange={(e) => setAquaShowcase(e.target.checked)} 
+                />Границы акватории
+              </form>
+
+              <form onSubmit={(e) => e.preventDefault()}>
+                <input type="checkbox" 
+                  checked={showPols}
+                  onChange={(e) => setPolsShowcase(e.target.checked)} 
+                />Полигоны
+              </form>
+
+              <form onSubmit={(e) => e.preventDefault()}>
+                <input type="checkbox" 
+                  checked={showMetrics}
+                  onChange={(e) => setShowMetrics(e.target.checked)} 
+                />Результаты вычислений
+              </form>
+
+              <form onSubmit={(e) => e.preventDefault()}>
+                <input type="checkbox" 
+                  checked={showVessels}
+                  onChange={(e) => setVesselShowcase(e.target.checked)} 
+                />Суда
+              </form>
+            </div>
+
+            {/*
             <div>
               <h4>Данные о судне или полигоне</h4>
               <div style={{border: 'solid 1px black', padding: 'auto',
@@ -251,7 +273,8 @@ function App() {
                 height: '175px', overflowY: 'auto', textAlign: 'center'
               }}>
               </div>
-            </div>          
+            </div>    
+            */}      
           </div>
 
           <div style={{display: 'flex', flexDirection: 'column',

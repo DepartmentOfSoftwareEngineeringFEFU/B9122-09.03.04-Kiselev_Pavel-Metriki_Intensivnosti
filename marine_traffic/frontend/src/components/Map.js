@@ -1,7 +1,7 @@
 // components/WorldMap.js
 import { generateGrid } from './Wakeri.js'
 import React from 'react';
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import { MapContainer, TileLayer, Polygon, Marker, Popup, useMap, ZoomControl } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -32,7 +32,7 @@ const createShipArrow = (course) => {
 };
 
 
-function WorldMap({ ships = [], aqua_x = [], aqua_y = [], squares = [], pol_size, showAqua, showPols, startTime, endTime}) {
+function WorldMap({ ships = [], aqua_x = [], aqua_y = [], squares = [], pol_size, showAqua, showPols, showVessels, showMetrics, startTime, endTime}) {
     // Начальная позиция карты (центр мира)
     const position = [20, 0];  // [широта, долгота]
 
@@ -95,7 +95,7 @@ function WorldMap({ ships = [], aqua_x = [], aqua_y = [], squares = [], pol_size
             {/* Пример маркера (можно удалить или добавить свои) */}
 
 
-            {ships.map((ship) => {
+            {showVessels && ships.map((ship) => {
                let proc_date = formatDateForInput(ship.date_add)
                return (proc_date >= startTime && proc_date <= endTime) ? (
               <Marker 
@@ -105,6 +105,8 @@ function WorldMap({ ships = [], aqua_x = [], aqua_y = [], squares = [], pol_size
                 <Popup>
                   ID: {ship.id_marine} <br />
                   Курс: {ship.course}° <br />
+                  Широта: {ship.lon} <br />
+                  Долгота: {ship.lat} <br />
                   Время получения данных: {proc_date}
                 </Popup>
               </Marker>
@@ -114,18 +116,19 @@ function WorldMap({ ships = [], aqua_x = [], aqua_y = [], squares = [], pol_size
             {aqua_x?.length === 2 && aqua_y?.length === 2 && showAqua == true && (
                 <Polygon 
                   positions={[
-                    [aqua_y[0]-0.003, aqua_x[1]+0.03],
-                    [aqua_y[0]-0.003, aqua_x[0]-0.03],
-                    [aqua_y[1]+0.003, aqua_x[0]-0.03],
-                    [aqua_y[1]+0.003, aqua_x[1]+0.03]
+                    [aqua_y[1], aqua_x[0]],
+                    [aqua_y[1], squares.length > 0 ? squares[squares.length - 1].bounds[1][1] : aqua_x[1]],
+                    [squares.length > 0 ? squares[squares.length - 1].bounds[0][0] : aqua_y[0], squares.length > 0 ? squares[squares.length - 1].bounds[1][1] : aqua_x[1]],
+                    [squares.length > 0 ? squares[squares.length - 1].bounds[0][0] : aqua_y[0], aqua_x[0]]
+
                   ]} 
                   color="red" 
                   weight={3}
                   fill={false}
                 />
             )}
-
-            {squares?.length>0 && showPols == true && squares.map((square, index) => (
+              
+              {squares?.length>0 && showPols == true && squares.map((square, index) => (
                 <Polygon
                 key={`${square.id}_${square.safety}`}
                 positions={[
@@ -135,19 +138,19 @@ function WorldMap({ ships = [], aqua_x = [], aqua_y = [], squares = [], pol_size
                     [square.bounds[1][0], square.bounds[0][1]],
                     [square.bounds[0][0], square.bounds[0][1]]
                 ]}
-                color="red"
+                color= 'red'
                 weight={1}
-                fill={ square.safety == -1 ? false : true }
+                fill={ (showMetrics == true) ? true : false }
                 fillColor={square.safety > 0 ? getColorByIntensity(square.safety) : 'transparent'}
-                fillOpacity={square.safety > 0 ? Math.min(0.3 + (square.safety / 150) * 0.5, 0.8) : 0}
+                fillOpacity={square.safety > -1 ? Math.min(0.3 + (square.safety / 150) * 0.5, 0.8) : 0}
             >
-    <Popup>
-        <strong>Квадрат {index}</strong><br />
-        Координаты: {square.bounds[0][0].toFixed(4)}, {square.bounds[0][1].toFixed(4)}<br />
-        Ширина: {square.bounds[1][1] - square.bounds[0][1]} <br />
-        Высота: {square.bounds[1][0] - square.bounds[0][0]} <br />
-        Судов внутри: {Number.isInteger(square.safety) ? square.safety : square.safety.toFixed(2)}
-    </Popup>
+            <Popup>
+              <strong>Квадрат {index+1}</strong><br />
+              Координаты центра: {((square.bounds[1][0] + square.bounds[0][0]) /2).toFixed(4)}, {((square.bounds[1][1] + square.bounds[0][1]) /2).toFixed(4)}<br />
+              Ширина: {(square.bounds[1][1] - square.bounds[0][1]).toFixed(4)} <br />
+              Высота: {(square.bounds[1][0] - square.bounds[0][0]).toFixed(4)} <br />
+              {(square.safety > -1) ? `Значение метрики: ${Number.isInteger(square.safety) ? square.safety : square.safety.toFixed(2)}` : null}
+            </Popup>
             </Polygon>  
             ))}
            
