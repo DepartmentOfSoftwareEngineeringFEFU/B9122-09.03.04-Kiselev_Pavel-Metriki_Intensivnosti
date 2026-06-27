@@ -2,7 +2,7 @@
 Программное средство для введения, обработки и редактирования метрик оценки безопасности движения судов.
 
 <h2>Запуск</h2>
-<code>git clone https://github.com/Pashinuyk/MarineTraffic_QualWork
+<textfield>git clone https://github.com/Pashinuyk/MarineTraffic_QualWork
 cd MarineTraffic QualWork
 
 Далее нужно создать 2 терминала:
@@ -14,9 +14,9 @@ python manage.py runserver
 Во втором:
 cd marine_traffic
 cd frontend
-npm start</code>
+npm start</textfield>
 
-Руководство по использованию:
+<h2>Руководство по использованию:</h2>
 1. В веб-интервейсе React (http://localhost:3000/) стоит необходимо загрузить файл - он имеется в директории проекта (dataset.csv)
 <img width="1919" height="945" alt="Screenshot_6914" src="https://github.com/user-attachments/assets/b96b2548-38ae-4b5a-af17-dd13a27c320d" />
 2. После этого можно начать вычислять метрики. В левом меню в разделе "метрики для отображения" необходимо выбрать одну из метрик, после нажать на кнопку снизу "вычислить
