@@ -3,18 +3,18 @@
 
 <h2>Запуск</h2>
 git clone https://github.com/Pashinuyk/MarineTraffic_QualWork<br>
-cd MarineTraffic QualWork
+cd MarineTraffic QualWork<br>
 
-Далее нужно создать 2 терминала:
-В первом терминале:
-source venv/Scripts/activate
-pip install -r requirements.txt
-python manage.py runserver
+Далее нужно создать 2 терминала:<br>
+В первом терминале:<br>
+source venv/Scripts/activate<br>
+pip install -r requirements.txt<br>
+python manage.py runserver<br>
 
-Во втором:
-cd marine_traffic
-cd frontend
-npm start
+Во втором:<br>
+cd marine_traffic<br>
+cd frontend<br>
+npm start<br>
 
 <h2>Руководство по использованию:</h2>
 1. В веб-интервейсе React (http://localhost:3000/) стоит необходимо загрузить файл - он имеется в директории проекта (dataset.csv)
