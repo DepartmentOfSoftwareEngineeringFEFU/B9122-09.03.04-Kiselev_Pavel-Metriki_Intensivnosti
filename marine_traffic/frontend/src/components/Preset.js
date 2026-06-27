@@ -161,7 +161,7 @@ const Preset = (props) => {
             left: '50%',
             transform: 'translate(-50%, -50%)',
             width: '250px',
-            height: '450px',
+            ...(shipDataset ? { height: '490px' } : { height: '250px' }),
             backgroundColor: 'white',
             border: '2px solid #333',
             borderRadius: '10px',
@@ -197,7 +197,7 @@ const Preset = (props) => {
             </div>
 
             {/* Ввод координат акватории */}
-            <div>
+            {(shipDataset ) ? <div>
                 <h4 style={{ marginBottom: '8px', textAlign: 'center' }}>Акватория</h4>
                 
                 <div style={{ display: 'flex', gap: '8px', marginBottom: '6px',  }}>
@@ -271,7 +271,7 @@ const Preset = (props) => {
                     <span>Кон. долгота</span>
                   </div>  
                 </div>
-            </div>
+            </div> : null }
 
             {/* Временной диапазон (показывается после загрузки CSV) */}
             {(shipDataset ) ? <div>

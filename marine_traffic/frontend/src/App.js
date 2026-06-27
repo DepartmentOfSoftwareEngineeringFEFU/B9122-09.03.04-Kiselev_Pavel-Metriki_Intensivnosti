@@ -4,6 +4,7 @@ import Header from './components/Header.js'
 import Panel from './components/Panel.js'
 import Map from './components/Map.js'
 import Preset from './components/Preset.js'
+import Export from './components/Export.js'
 import { generateGrid } from './components/Wakeri.js'
 import { metricsCount } from './components/Metrics_Count.js'
 
@@ -295,8 +296,9 @@ function App() {
           <div style={{display: 'flex', flexDirection: 'column',
            alignItems: 'center', marginBottom: '30px'
           }}>
-            <button style={{width: '200px', height: '50px',
-              borderRadius: '10px', margin: '20px'}}>Визуализировать
+            <button onClick={() => Export(squares)} style={{width: '200px', height: '50px',
+              borderRadius: '10px', margin: '20px'}}
+              >Экспортировать
             </button>
 
 
