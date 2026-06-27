@@ -71,6 +71,19 @@ function App() {
     console.log('Размер данных: ', data.ships.length)
     console.log('ВСЕ ДАННЫЕ:', data.ships)
     console.log('Первая строка: ', data.ships[0].id_track,' ',data.ships[0].id_marine,' ',data.ships[0].lat,' ',data.ships[0].lon,' ',data.ships[0].speed,' ',data.ships[0].course,' ',data.ships[0].age,' ',data.ships[0].date_add)
+
+    let reserv = 0
+    if (data.x_proc[0] > data.x_proc[1]) {
+      reserv = data.x_proc[0]
+      data.x_proc[0] = data.x_proc[1]
+      data.x_proc[1] = reserv
+    }
+    if (data.y_proc[0] > data.y_proc[1]) {
+      reserv = data.y_proc[0]
+      data.y_proc[0] = data.y_proc[1]
+      data.y_proc[1] = reserv
+    }
+
     setShips(data.ships);
     setAquaX(data.x_proc)
     setAquaY(data.y_proc)
@@ -149,58 +162,6 @@ function App() {
 
           </div>
 
-          
-          <div>
-    <h4>Временной диапазон:</h4>
-    <form style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '8px 0' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <label style={{ minWidth: '30px', fontWeight: 'bold' }}>С</label>
-            <input
-                type="datetime-local"
-                value={startTimeInput}
-                onChange={(e) => setStartTimeInput(e.target.value)}
-                style={{
-                    padding: '4px 8px',
-                    border: '1px solid #ccc',
-                    borderRadius: '4px',
-                    fontSize: '13px',
-                    flex: 1
-                }}
-            />
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <label style={{ minWidth: '30px', fontWeight: 'bold' }}>По</label>
-            <input
-                type="datetime-local"
-                value={endTimeInput}
-                onChange={(e) => setEndTimeInput(e.target.value)}
-                style={{
-                    padding: '4px 8px',
-                    border: '1px solid #ccc',
-                    borderRadius: '4px',
-                    fontSize: '13px',
-                    flex: 1
-                }}
-            />
-        </div>
-        <button
-            type="button"
-            onClick={applyTimeFilter}
-            style={{
-                padding: '4px 12px',
-                backgroundColor: '#138ff4',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                marginTop: '4px'
-            }}
-        >
-            Применить фильтр
-        </button>
-    </form>
-</div>
-
 
           <div style={{display: 'flex', flexDirection: 'column',
            alignItems: 'center', marginBottom: '30px'
@@ -276,6 +237,60 @@ function App() {
             </div>    
             */}      
           </div>
+
+
+          <div>
+            <h4>Временной диапазон:</h4>
+            <form style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '8px 0' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <label style={{ minWidth: '30px', fontWeight: 'bold' }}>С</label>
+                    <input
+                        type="datetime-local"
+                        value={startTimeInput}
+                        onChange={(e) => setStartTimeInput(e.target.value)}
+                        style={{
+                            padding: '4px 8px',
+                            border: '1px solid #ccc',
+                            borderRadius: '4px',
+                            fontSize: '13px',
+                            flex: 1
+                        }}
+                    />
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <label style={{ minWidth: '30px', fontWeight: 'bold' }}>По</label>
+                    <input
+                        type="datetime-local"
+                        value={endTimeInput}
+                        onChange={(e) => setEndTimeInput(e.target.value)}
+                        style={{
+                            padding: '4px 8px',
+                            border: '1px solid #ccc',
+                            borderRadius: '4px',
+                            fontSize: '13px',
+                            flex: 1
+                        }}
+                    />
+                </div>
+                <button
+                    type="button"
+                    onClick={applyTimeFilter}
+                    style={{
+                        padding: '4px 12px',
+                        backgroundColor: '#138ff4',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        marginTop: '4px'
+                    }}
+                >
+                    Применить фильтр
+                </button>
+            </form>
+          </div>
+
+
 
           <div style={{display: 'flex', flexDirection: 'column',
            alignItems: 'center', marginBottom: '30px'

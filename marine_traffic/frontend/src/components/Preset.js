@@ -19,6 +19,12 @@ const Preset = (props) => {
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
 
+    // Координаты акватории
+    const [aquaStartLat, setAquaStartLat] = useState('');
+    const [aquaStartLon, setAquaStartLon] = useState('');
+    const [aquaEndLat, setAquaEndLat] = useState('');
+    const [aquaEndLon, setAquaEndLon] = useState('');
+
     const applyTimeFilter = () => {
         console.log('Фильтр по времени:');
         console.log('С:', startTime);
@@ -143,6 +149,7 @@ const Preset = (props) => {
                 endTime: endTime
             });
         }
+        console.log(x_proc,' ',y_proc)
         setIsOpen(props.setPresetOpenness(false))
     };
 
@@ -154,7 +161,7 @@ const Preset = (props) => {
             left: '50%',
             transform: 'translate(-50%, -50%)',
             width: '250px',
-            height: '400px',
+            height: '450px',
             backgroundColor: 'white',
             border: '2px solid #333',
             borderRadius: '10px',
@@ -166,10 +173,10 @@ const Preset = (props) => {
             alignItems: 'center',
         }}>
             <div style={{display: 'flex', flexDirection: 'column',
-                alignItems: 'center'
+                alignItems: 'center',
             }}>
               <h3>Загрузка данных</h3>
-              <div style={{ marginBottom: '20px' }}>
+              <div style={{ marginBottom: '5px' }}>
                         <label style={{ display: 'block', marginBottom: '5px' }}>
                             Датасет кораблей:
                         </label>
@@ -189,8 +196,86 @@ const Preset = (props) => {
             
             </div>
 
+            {/* Ввод координат акватории */}
+            <div>
+                <h4 style={{ marginBottom: '8px', textAlign: 'center' }}>Акватория</h4>
+                
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '6px',  }}>
+                  <div>  
+                    <input
+                        type="number"
+                        placeholder="Нач. широта"
+                        value={y_proc[0]}
+                        onChange={(e) => 
+                            setYProc([
+                                Number(e.target.value),
+                                y_proc[1]
+                            ])}
+                        style={{  padding: '4px 8px', border: '1px solid #ccc', borderRadius: '4px' }}
+                        step="0.001"
+                        size='10'
+                    />
+                    <span>Нач. широта</span>
+                  </div>
+
+                  <div>   
+                    <input
+                        type="number"
+                        placeholder="Нач. долгота"
+                        value={x_proc[0]}
+                        onChange={(e) => 
+                            setXProc([
+                                Number(e.target.value),
+                                x_proc[1]
+                            ])}
+                        style={{ padding: '4px 8px', border: '1px solid #ccc', borderRadius: '4px' }}
+                        step="0.001"
+                        size='10'
+                    />
+                    <span>Нач. долгота</span>
+                  </div>  
+
+                </div>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <div>  
+                    <input
+                        type="number"
+                        placeholder="Кон. широта"
+                        value={y_proc[1]}
+                        onChange={(e) => 
+                            setYProc([
+                                y_proc[0],
+                                Number(e.target.value)
+                            ])}
+                        style={{ padding: '4px 8px', border: '1px solid #ccc', borderRadius: '4px' }}
+                        step="0.001"
+                        size='10'
+                    />
+                    <span>Кон. широта</span>
+                  </div>  
+
+                  <div>
+                    <input
+                        type="number"
+                        placeholder="Кон. долгота"
+                        value={x_proc[1]}
+                        onChange={(e) => 
+                            setXProc([
+                                x_proc[0],
+                                Number(e.target.value)
+                            ])}
+                        style={{ padding: '4px 8px', border: '1px solid #ccc', borderRadius: '4px' }}
+                        step="0.001"
+                        size='10'
+                    />
+                    <span>Кон. долгота</span>
+                  </div>  
+                </div>
+            </div>
+
+            {/* Временной диапазон (показывается после загрузки CSV) */}
             {(shipDataset ) ? <div>
-              <h4>Временной диапазон:</h4>
+              <h4 style={{ marginBottom: '8px', textAlign: 'center' }}>Временной диапазон</h4>
               <form style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '8px 0' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <label style={{ minWidth: '30px', fontWeight: 'bold' }}>С</label>
