@@ -115,8 +115,8 @@ const Preset = (props) => {
                           return `${year}-${month}-${day}T${hours}:${minutes}`;
                         }
 
-                        setXProc([minLat, maxLat]);
-                        setYProc([minLon, maxLon]);
+                        setXProc([minLat-0.03, maxLat+0.03]);
+                        setYProc([minLon-0.03, maxLon+0.03]);
 
                         setStartTime(formatDateForInput(minDate))
                         setEndTime(formatDateForInput(maxDate))
@@ -215,7 +215,7 @@ const Preset = (props) => {
                         step="0.001"
                         size='10'
                     />
-                    <span>Нач. широта</span>
+                    Нач. широта
                   </div>
 
                   <div>   
@@ -232,7 +232,7 @@ const Preset = (props) => {
                         step="0.001"
                         size='10'
                     />
-                    <span>Нач. долгота</span>
+                    Нач. долгота
                   </div>  
 
                 </div>
@@ -251,7 +251,7 @@ const Preset = (props) => {
                         step="0.001"
                         size='10'
                     />
-                    <span>Кон. широта</span>
+                    Кон. широта
                   </div>  
 
                   <div>
@@ -268,7 +268,7 @@ const Preset = (props) => {
                         step="0.001"
                         size='10'
                     />
-                    <span>Кон. долгота</span>
+                    Кон. долгота
                   </div>  
                 </div>
             </div> : null }
