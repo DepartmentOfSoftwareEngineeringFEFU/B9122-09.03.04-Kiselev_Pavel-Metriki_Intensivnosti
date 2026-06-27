@@ -13,7 +13,7 @@ python manage.py makemigrations<br>
 python manage.py migrate<br>
 python manage.py runserver<br>
 
-Далее необходимо открыть второй терминал, открыть в нём папку MarineTraffic_QualWork и прописать следующее:<br>
+Далее необходимо открыть второй терминал, открыть в нём папку B9122-09.03.04-Kiselev_Pavel-Metriki_Intensivnosti и прописать следующее:<br>
 cd marine_traffic<br>
 cd frontend<br>
 npm install<br>
