@@ -2,8 +2,8 @@
 Программное средство для введения, обработки и редактирования метрик оценки безопасности движения судов.
 
 <h2>Запуск</h2>
-git clone https://github.com/Pashinuyk/MarineTraffic_QualWork<br>
-cd MarineTraffic_QualWork<br>
+git clone [https://github.com/Pashinuyk/MarineTraffic_QualWork](https://github.com/DepartmentOfSoftwareEngineeringFEFU/B9122-09.03.04-Kiselev_Pavel-Metriki_Intensivnosti)<br>
+cd B9122-09.03.04-Kiselev_Pavel-Metriki_Intensivnosti<br>
 
 pythom -m venv venv<br>
 source venv/Scripts/activate<br>
