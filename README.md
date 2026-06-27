@@ -2,7 +2,7 @@
 Программное средство для введения, обработки и редактирования метрик оценки безопасности движения судов.
 
 <h2>Запуск</h2>
-```git clone https://github.com/Pashinuyk/MarineTraffic_QualWork
+git clone https://github.com/Pashinuyk/MarineTraffic_QualWork
 cd MarineTraffic QualWork
 
 Далее нужно создать 2 терминала:
@@ -14,7 +14,7 @@ python manage.py runserver
 Во втором:
 cd marine_traffic
 cd frontend
-npm start```
+npm start
 
 <h2>Руководство по использованию:</h2>
 1. В веб-интервейсе React (http://localhost:3000/) стоит необходимо загрузить файл - он имеется в директории проекта (dataset.csv)
