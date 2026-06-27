@@ -2,7 +2,7 @@
 Программное средство для введения, обработки и редактирования метрик оценки безопасности движения судов.
 
 <h2>Запуск</h2>
-git clone https://github.com/Pashinuyk/MarineTraffic_QualWork
+git clone https://github.com/Pashinuyk/MarineTraffic_QualWork<br>
 cd MarineTraffic QualWork
 
 Далее нужно создать 2 терминала:
