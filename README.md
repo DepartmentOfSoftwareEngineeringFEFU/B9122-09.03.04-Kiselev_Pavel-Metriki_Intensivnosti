@@ -27,6 +27,6 @@ npm start</textfield>
 <img width="480" height="236" alt="Screenshot_6916" src="https://github.com/user-attachments/assets/73b9cf4a-ceae-426d-a51c-496d0d0ed79c" />
 
 4. При необходимости создать собственную метрику нужно перейти в API (http://127.0.0.1:8000/api/metrics/). В его меню можно выбирать различные характеристики, на основе которых будут вычисляться метрики, после чего отправлять.
-<img width="1489" height="863" alt="Screenshot_6917" src="https://github.com/user-attachments/assets/52ea5f1c-2ff1-40b6-9eda-fae2aa62ac22" />
+<img width="496" height="287" alt="Screenshot_6917" src="https://github.com/user-attachments/assets/52ea5f1c-2ff1-40b6-9eda-fae2aa62ac22" />
 
 5. После создания новой метрики в React-интерфейсе в левом меню в разделе "метрики для отображения" необходимо нажать на кнопку "обновить", после чего новая метрика появится в списке.
