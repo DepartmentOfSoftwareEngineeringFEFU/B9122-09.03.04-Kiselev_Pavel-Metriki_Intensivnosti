@@ -1,7 +1,7 @@
 # B9122-09.03.04-Kiselev_Pavel-Metriki_Intensivnosti
 Программное средство для введения, обработки и редактирования метрик оценки безопасности движения судов.
 
-Запуск
+<h3>Запуск</h3>
 <code>git clone https://github.com/Pashinuyk/MarineTraffic_QualWork
 cd MarineTraffic QualWork
 
