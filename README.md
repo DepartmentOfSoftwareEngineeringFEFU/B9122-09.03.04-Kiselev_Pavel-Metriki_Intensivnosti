@@ -3,7 +3,7 @@
 
 <h2>Запуск</h2>
 git clone https://github.com/Pashinuyk/MarineTraffic_QualWork<br>
-cd MarineTraffic QualWork<br>
+cd MarineTraffic_QualWork<br>
 
 Далее нужно создать 2 терминала:<br>
 В первом терминале:<br>
