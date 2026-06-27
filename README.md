@@ -5,15 +5,18 @@
 git clone https://github.com/Pashinuyk/MarineTraffic_QualWork<br>
 cd MarineTraffic_QualWork<br>
 
-Далее нужно создать 2 терминала:<br>
-В первом терминале:<br>
+pythom -m venv venv<br>
 source venv/Scripts/activate<br>
 pip install -r requirements.txt<br>
+cd marine_traffic<br>
+python manage.py makemigrations<br>
+python manage.py migrate<br>
 python manage.py runserver<br>
 
-Во втором:<br>
+Далее необходимо открыть второй терминал, открыть в нём папку MarineTraffic_QualWork и прописать следующее:
 cd marine_traffic<br>
 cd frontend<br>
+npm install<br>
 npm start<br>
 
 <h2>Руководство по использованию:</h2>
