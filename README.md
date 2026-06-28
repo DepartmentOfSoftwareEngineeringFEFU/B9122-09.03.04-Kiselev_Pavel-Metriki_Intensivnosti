@@ -2,22 +2,30 @@
 Программное средство для введения, обработки и редактирования метрик оценки безопасности движения судов.
 
 <h2>Запуск</h2>
-git clone https://github.com/Pashinuyk/MarineTraffic_QualWork<br>
-cd MarineTraffic QualWork<br>
+Подразумевается, что всей действия будут вводиться через терминал Git Bash.<br>
 
-Далее нужно создать 2 терминала:<br>
-В первом терминале:<br>
+
+git clone [https://github.com/Pashinuyk/MarineTraffic_QualWork](https://github.com/DepartmentOfSoftwareEngineeringFEFU/B9122-09.03.04-Kiselev_Pavel-Metriki_Intensivnosti)<br>
+cd B9122-09.03.04-Kiselev_Pavel-Metriki_Intensivnosti<br>
+
+
+pythom -m venv venv<br>
 source venv/Scripts/activate<br>
 pip install -r requirements.txt<br>
+cd marine_traffic<br>
+python manage.py makemigrations<br>
+python manage.py migrate<br>
 python manage.py runserver<br>
 
-Во втором:<br>
+
+Далее необходимо открыть второй терминал, зайти через него в папку B9122-09.03.04-Kiselev_Pavel-Metriki_Intensivnosti и прописать следующее:<br>
 cd marine_traffic<br>
 cd frontend<br>
+npm install<br>
 npm start<br>
 
 <h2>Руководство по использованию:</h2>
-1. В веб-интервейсе React (http://localhost:3000/) стоит необходимо загрузить файл - он имеется в директории проекта (dataset.csv)
+1. В веб-интервейсе React (http://localhost:3000/) необходимо загрузить файл - он имеется в директории проекта (dataset.csv)
 <img width="720" height="354" alt="Screenshot_6914" src="https://github.com/user-attachments/assets/b96b2548-38ae-4b5a-af17-dd13a27c320d" />
 
 
