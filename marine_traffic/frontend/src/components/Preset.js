@@ -212,7 +212,7 @@ const Preset = (props) => {
                                 y_proc[1]
                             ])}
                         style={{  padding: '4px 8px', border: '1px solid #ccc', borderRadius: '4px' }}
-                        step="0.001"
+                        step="0.5"
                         size='10'
                     />
                     Нач. широта
@@ -229,7 +229,7 @@ const Preset = (props) => {
                                 x_proc[1]
                             ])}
                         style={{ padding: '4px 8px', border: '1px solid #ccc', borderRadius: '4px' }}
-                        step="0.001"
+                        step="0.5"
                         size='10'
                     />
                     Нач. долгота
@@ -248,7 +248,7 @@ const Preset = (props) => {
                                 Number(e.target.value)
                             ])}
                         style={{ padding: '4px 8px', border: '1px solid #ccc', borderRadius: '4px' }}
-                        step="0.001"
+                        step="0.5"
                         size='10'
                     />
                     Кон. широта
@@ -265,7 +265,7 @@ const Preset = (props) => {
                                 Number(e.target.value)
                             ])}
                         style={{ padding: '4px 8px', border: '1px solid #ccc', borderRadius: '4px' }}
-                        step="0.001"
+                        step="0.5"
                         size='10'
                     />
                     Кон. долгота

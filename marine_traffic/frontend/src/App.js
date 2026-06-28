@@ -64,6 +64,19 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault(); // чтобы страница не перезагружалась
+
+    const val = parseFloat(inputValue);
+    
+    if (!inputValue || isNaN(val)) {
+        alert('Введите число');
+        return;
+    }
+    
+    if (val <= 0) {
+        alert('Размер полигонов должен быть больше 0');
+        return;
+    }    
+
     setPol(Number(inputValue));
   };
 
@@ -156,7 +169,8 @@ function App() {
             <input
             type="number"
             value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={(e) => setInputValue(e.target.value)
+            }  
             />
             <button type="sumbit">Подтвердить</button>
           </form>
