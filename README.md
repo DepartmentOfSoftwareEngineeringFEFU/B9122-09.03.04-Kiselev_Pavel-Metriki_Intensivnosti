@@ -25,7 +25,7 @@ npm install<br>
 npm start<br>
 
 <h2>Руководство по использованию:</h2>
-1. В веб-интервейсе React (http://localhost:3000/) стоит необходимо загрузить файл - он имеется в директории проекта (dataset.csv)
+1. В веб-интервейсе React (http://localhost:3000/) необходимо загрузить файл - он имеется в директории проекта (dataset.csv)
 <img width="720" height="354" alt="Screenshot_6914" src="https://github.com/user-attachments/assets/b96b2548-38ae-4b5a-af17-dd13a27c320d" />
 
 
