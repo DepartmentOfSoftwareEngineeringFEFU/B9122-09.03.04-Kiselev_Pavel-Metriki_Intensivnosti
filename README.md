@@ -2,8 +2,12 @@
 Программное средство для введения, обработки и редактирования метрик оценки безопасности движения судов.
 
 <h2>Запуск</h2>
+Подразумевается, что всей действия будут вводиться через терминал Git Bash.<br>
+
+
 git clone [https://github.com/Pashinuyk/MarineTraffic_QualWork](https://github.com/DepartmentOfSoftwareEngineeringFEFU/B9122-09.03.04-Kiselev_Pavel-Metriki_Intensivnosti)<br>
 cd B9122-09.03.04-Kiselev_Pavel-Metriki_Intensivnosti<br>
+
 
 pythom -m venv venv<br>
 source venv/Scripts/activate<br>
@@ -12,6 +16,7 @@ cd marine_traffic<br>
 python manage.py makemigrations<br>
 python manage.py migrate<br>
 python manage.py runserver<br>
+
 
 Далее необходимо открыть второй терминал, открыть в нём папку B9122-09.03.04-Kiselev_Pavel-Metriki_Intensivnosti и прописать следующее:<br>
 cd marine_traffic<br>
